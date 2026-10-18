@@ -540,6 +540,32 @@ func Do[T any](ctx context.Context, method, path string, opts *RequestOpts) (*Sd
 	return DoCfg[T](ctx, GetConfig(), method, path, opts)
 }
 
+// keepsEveryKey reports whether value, encoded again, still carries every key
+// of the object payload raw; a key omitempty drops (null or empty) does not
+// count. An untagged union takes such a branch first: Go ignores keys a struct
+// does not declare, so the first branch that decodes can lose the rest.
+func keepsEveryKey(raw map[string]json.RawMessage, value any) bool {
+	encodedBytes, err := json.Marshal(value)
+	if err != nil {
+		return false
+	}
+	var encoded map[string]json.RawMessage
+	if json.Unmarshal(encodedBytes, &encoded) != nil {
+		return false
+	}
+	for key, item := range raw {
+		if _, ok := encoded[key]; ok {
+			continue
+		}
+		switch string(bytes.TrimSpace(item)) {
+		case "null", "[]", "{}", `""`, "false", "0":
+			continue
+		}
+		return false
+	}
+	return true
+}
+
 // DoCfg executes an HTTP request with an explicit config and decodes JSON into T.
 func DoCfg[T any](ctx context.Context, cfg *ClientConfig, method, path string, opts *RequestOpts) (*SdkResponse[T], error) {
 	resp, body, err := exchange(ctx, cfg, method, path, opts)
@@ -621,34 +647,6 @@ func DoEmptyCfg(ctx context.Context, cfg *ClientConfig, method, path string, opt
 		Latency:    resp.latency,
 		Attempt:    resp.attempt,
 	}, nil
-}
-
-// DoUnion runs a request and decodes the response via a union-aware unmarshaler.
-func DoUnion[T any](ctx context.Context, method, path string, opts *RequestOpts, unmarshal func(any) T) (*SdkResponse[T], error) {
-	return DoUnionCfg[T](ctx, GetConfig(), method, path, opts, unmarshal)
-}
-
-// DoUnionCfg runs a union request with explicit config.
-func DoUnionCfg[T any](ctx context.Context, cfg *ClientConfig, method, path string, opts *RequestOpts, unmarshal func(any) T) (*SdkResponse[T], error) {
-	resp, body, err := exchange(ctx, cfg, method, path, opts)
-	if err != nil {
-		return nil, err
-	}
-	out := &SdkResponse[T]{
-		StatusCode: resp.statusCode,
-		Headers:    resp.headers,
-		RequestID:  resp.requestID,
-		Latency:    resp.latency,
-		Attempt:    resp.attempt,
-	}
-	if len(body) > 0 {
-		var raw any
-		if err := decodeResponse(resp, body, opts, &raw); err != nil {
-			return nil, err
-		}
-		out.Data = unmarshal(raw)
-	}
-	return out, nil
 }
 
 // DoAny returns a decoded any value for endpoints with no static schema.
