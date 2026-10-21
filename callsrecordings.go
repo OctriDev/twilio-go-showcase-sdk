@@ -10,55 +10,6 @@ import (
 	"fmt"
 )
 
-type ListCallsRecordingsResponse struct {
-	End             *int64                             `json:"end,omitempty"`
-	FirstPageUri    *string                            `json:"first_page_uri,omitempty"`
-	NextPageUri     *NullableValue[string]             `json:"next_page_uri,omitempty"`
-	Page            *int64                             `json:"page,omitempty"`
-	PageSize        *int64                             `json:"page_size,omitempty"`
-	PreviousPageUri *NullableValue[string]             `json:"previous_page_uri,omitempty"`
-	Start           *int64                             `json:"start,omitempty"`
-	Uri             *string                            `json:"uri,omitempty"`
-	Recordings      []ApiV2010AccountCallCallRecording `json:"recordings,omitempty"`
-}
-
-func (value *ListCallsRecordingsResponse) UnmarshalJSON(data []byte) error {
-	type ListCallsRecordingsResponseAlias ListCallsRecordingsResponse
-	var decoded ListCallsRecordingsResponseAlias
-	if err := json.Unmarshal(data, &decoded); err != nil {
-		return err
-	}
-	*value = ListCallsRecordingsResponse(decoded)
-	var rawFields map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawFields); err != nil {
-		return err
-	}
-	if value.FirstPageUri != nil {
-		if err := ValidateUri("first_page_uri", *value.FirstPageUri); err != nil {
-			return err
-		}
-	}
-	if value.Uri != nil {
-		if err := ValidateUri("uri", *value.Uri); err != nil {
-			return err
-		}
-	}
-	if raw, ok := rawFields["next_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
-		value.NextPageUri = &NullableValue[string]{}
-	}
-	if raw, ok := rawFields["previous_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
-		value.PreviousPageUri = &NullableValue[string]{}
-	}
-	return nil
-}
-
-// NewListCallsRecordingsResponse returns a validated ListCallsRecordingsResponse built from named fields.
-// Optional fields may be left unset; a value that violates the schema is
-// reported as *SdkValidationError.
-func NewListCallsRecordingsResponse(fields ListCallsRecordingsResponse) (*ListCallsRecordingsResponse, error) {
-	return ConstructModel(fields)
-}
-
 type CreateCallsRecordingsParams struct {
 	AccountSid                    string
 	CallSid                       string
@@ -450,4 +401,53 @@ func DeleteCallsRecordings(ctx context.Context, clientConfig ClientConfig, param
 		return nil, err
 	}
 	return nil, nil
+}
+
+type ListCallsRecordingsResponse struct {
+	End             *int64                             `json:"end,omitempty"`
+	FirstPageUri    *string                            `json:"first_page_uri,omitempty"`
+	NextPageUri     *NullableValue[string]             `json:"next_page_uri,omitempty"`
+	Page            *int64                             `json:"page,omitempty"`
+	PageSize        *int64                             `json:"page_size,omitempty"`
+	PreviousPageUri *NullableValue[string]             `json:"previous_page_uri,omitempty"`
+	Start           *int64                             `json:"start,omitempty"`
+	Uri             *string                            `json:"uri,omitempty"`
+	Recordings      []ApiV2010AccountCallCallRecording `json:"recordings,omitempty"`
+}
+
+func (value *ListCallsRecordingsResponse) UnmarshalJSON(data []byte) error {
+	type ListCallsRecordingsResponseAlias ListCallsRecordingsResponse
+	var decoded ListCallsRecordingsResponseAlias
+	if err := json.Unmarshal(data, &decoded); err != nil {
+		return err
+	}
+	*value = ListCallsRecordingsResponse(decoded)
+	var rawFields map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawFields); err != nil {
+		return err
+	}
+	if value.FirstPageUri != nil {
+		if err := ValidateUri("first_page_uri", *value.FirstPageUri); err != nil {
+			return err
+		}
+	}
+	if value.Uri != nil {
+		if err := ValidateUri("uri", *value.Uri); err != nil {
+			return err
+		}
+	}
+	if raw, ok := rawFields["next_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
+		value.NextPageUri = &NullableValue[string]{}
+	}
+	if raw, ok := rawFields["previous_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
+		value.PreviousPageUri = &NullableValue[string]{}
+	}
+	return nil
+}
+
+// NewListCallsRecordingsResponse returns a validated ListCallsRecordingsResponse built from named fields.
+// Optional fields may be left unset; a value that violates the schema is
+// reported as *SdkValidationError.
+func NewListCallsRecordingsResponse(fields ListCallsRecordingsResponse) (*ListCallsRecordingsResponse, error) {
+	return ConstructModel(fields)
 }

@@ -4,60 +4,9 @@
 package sdk
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 )
-
-type ListConferencesParticipantsResponse struct {
-	End             *int64                                 `json:"end,omitempty"`
-	FirstPageUri    *string                                `json:"first_page_uri,omitempty"`
-	NextPageUri     *NullableValue[string]                 `json:"next_page_uri,omitempty"`
-	Page            *int64                                 `json:"page,omitempty"`
-	PageSize        *int64                                 `json:"page_size,omitempty"`
-	PreviousPageUri *NullableValue[string]                 `json:"previous_page_uri,omitempty"`
-	Start           *int64                                 `json:"start,omitempty"`
-	Uri             *string                                `json:"uri,omitempty"`
-	Participants    []ApiV2010AccountConferenceParticipant `json:"participants,omitempty"`
-}
-
-func (value *ListConferencesParticipantsResponse) UnmarshalJSON(data []byte) error {
-	type ListConferencesParticipantsResponseAlias ListConferencesParticipantsResponse
-	var decoded ListConferencesParticipantsResponseAlias
-	if err := json.Unmarshal(data, &decoded); err != nil {
-		return err
-	}
-	*value = ListConferencesParticipantsResponse(decoded)
-	var rawFields map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawFields); err != nil {
-		return err
-	}
-	if value.FirstPageUri != nil {
-		if err := ValidateUri("first_page_uri", *value.FirstPageUri); err != nil {
-			return err
-		}
-	}
-	if value.Uri != nil {
-		if err := ValidateUri("uri", *value.Uri); err != nil {
-			return err
-		}
-	}
-	if raw, ok := rawFields["next_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
-		value.NextPageUri = &NullableValue[string]{}
-	}
-	if raw, ok := rawFields["previous_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
-		value.PreviousPageUri = &NullableValue[string]{}
-	}
-	return nil
-}
-
-// NewListConferencesParticipantsResponse returns a validated ListConferencesParticipantsResponse built from named fields.
-// Optional fields may be left unset; a value that violates the schema is
-// reported as *SdkValidationError.
-func NewListConferencesParticipantsResponse(fields ListConferencesParticipantsResponse) (*ListConferencesParticipantsResponse, error) {
-	return ConstructModel(fields)
-}
 
 type FetchConferencesParticipantsParams struct {
 	AccountSid    string
@@ -309,69 +258,4 @@ func DeleteConferencesParticipants(ctx context.Context, clientConfig ClientConfi
 		return nil, err
 	}
 	return nil, nil
-}
-
-type CreateConferencesParticipantsParams struct {
-	AccountSid                              string
-	ConferenceSid                           string
-	From                                    string
-	To                                      string
-	StatusCallback                          *string
-	StatusCallbackMethod                    *string
-	StatusCallbackEvent                     *[]string
-	Label                                   *string
-	Timeout                                 *int64
-	Record                                  *bool
-	Muted                                   *bool
-	Beep                                    *string
-	StartConferenceOnEnter                  *bool
-	EndConferenceOnExit                     *bool
-	WaitUrl                                 *string
-	WaitMethod                              *string
-	EarlyMedia                              *bool
-	MaxParticipants                         *int64
-	ConferenceRecord                        *string
-	ConferenceTrim                          *string
-	ConferenceStatusCallback                *string
-	ConferenceStatusCallbackMethod          *string
-	ConferenceStatusCallbackEvent           *[]string
-	RecordingChannels                       *string
-	RecordingStatusCallback                 *string
-	RecordingStatusCallbackMethod           *string
-	SipAuthUsername                         *string
-	SipAuthPassword                         *string
-	Region                                  *string
-	ConferenceRecordingStatusCallback       *string
-	ConferenceRecordingStatusCallbackMethod *string
-	RecordingStatusCallbackEvent            *[]string
-	ConferenceRecordingStatusCallbackEvent  *[]string
-	Coaching                                *bool
-	CallSidToCoach                          *string
-	JitterBufferSize                        *string
-	Byoc                                    *string
-	CallerId                                *string
-	CallReason                              *string
-	RecordingTrack                          *string
-	RecordingConfigurationId                *string
-	TimeLimit                               *int64
-	MachineDetection                        *string
-	MachineDetectionTimeout                 *int64
-	MachineDetectionSpeechThreshold         *int64
-	MachineDetectionSpeechEndThreshold      *int64
-	MachineDetectionSilenceTimeout          *int64
-	AmdStatusCallback                       *string
-	AmdStatusCallbackMethod                 *string
-	Trim                                    *string
-	CallToken                               *string
-	Passports                               *string
-	ClientNotificationUrl                   *string
-	CallerDisplayName                       *string
-	EmergencyCallerPosition                 *string
-	EmergencyCallerLocation                 *string
-	EmergencyName                           *string
-	EmergencyAddress                        *string
-	EmergencyZipCode                        *string
-	EmergencyCity                           *string
-	EmergencyState                          *string
-	EmergencyCountry                        *string
 }

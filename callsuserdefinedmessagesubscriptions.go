@@ -8,7 +8,7 @@ import (
 	"fmt"
 )
 
-type CreateCallsUserDefinedMessageSubscriptionsParams struct {
+type CreateCallUserDefinedMessageSubscriptionParams struct {
 	AccountSid     string
 	CallSid        string
 	Callback       string
@@ -16,7 +16,7 @@ type CreateCallsUserDefinedMessageSubscriptionsParams struct {
 	Method         *string
 }
 
-// CreateCallsUserDefinedMessageSubscriptions subscribe to User Defined Messages for a given Call SID.
+// CreateCallUserDefinedMessageSubscription subscribe to User Defined Messages for a given Call SID.
 //
 // Parameters:
 //
@@ -34,7 +34,7 @@ type CreateCallsUserDefinedMessageSubscriptionsParams struct {
 //	unique string value per API call and can be a randomly generated.
 //	method: The HTTP method Twilio will use when requesting the above `Url`.
 //	Either `GET` or `POST`. Default is `POST`.
-func CreateCallsUserDefinedMessageSubscriptions(ctx context.Context, clientConfig ClientConfig, params CreateCallsUserDefinedMessageSubscriptionsParams, opts ...RequestOption) (*ApiV2010AccountCallUserDefinedMessageSubscription, error) {
+func CreateCallUserDefinedMessageSubscription(ctx context.Context, clientConfig ClientConfig, params CreateCallUserDefinedMessageSubscriptionParams, opts ...RequestOption) (*ApiV2010AccountCallUserDefinedMessageSubscription, error) {
 	accountSid := params.AccountSid
 	callSid := params.CallSid
 	callback := params.Callback
@@ -66,7 +66,7 @@ func CreateCallsUserDefinedMessageSubscriptions(ctx context.Context, clientConfi
 			"Method":         method,
 		},
 		ContentType: "application/x-www-form-urlencoded",
-		OperationID: "CreateCallsUserDefinedMessageSubscriptions",
+		OperationID: "CreateCallUserDefinedMessageSubscription",
 		Options:     opts,
 	})
 	if err != nil {

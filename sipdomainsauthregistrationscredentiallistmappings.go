@@ -10,55 +10,6 @@ import (
 	"fmt"
 )
 
-type ListSipDomainsAuthRegistrationsCredentialListMappingsResponse struct {
-	End             *int64                                                                                            `json:"end,omitempty"`
-	FirstPageUri    *string                                                                                           `json:"first_page_uri,omitempty"`
-	NextPageUri     *NullableValue[string]                                                                            `json:"next_page_uri,omitempty"`
-	Page            *int64                                                                                            `json:"page,omitempty"`
-	PageSize        *int64                                                                                            `json:"page_size,omitempty"`
-	PreviousPageUri *NullableValue[string]                                                                            `json:"previous_page_uri,omitempty"`
-	Start           *int64                                                                                            `json:"start,omitempty"`
-	Uri             *string                                                                                           `json:"uri,omitempty"`
-	Contents        []ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping `json:"contents,omitempty"`
-}
-
-func (value *ListSipDomainsAuthRegistrationsCredentialListMappingsResponse) UnmarshalJSON(data []byte) error {
-	type ListSipDomainsAuthRegistrationsCredentialListMappingsResponseAlias ListSipDomainsAuthRegistrationsCredentialListMappingsResponse
-	var decoded ListSipDomainsAuthRegistrationsCredentialListMappingsResponseAlias
-	if err := json.Unmarshal(data, &decoded); err != nil {
-		return err
-	}
-	*value = ListSipDomainsAuthRegistrationsCredentialListMappingsResponse(decoded)
-	var rawFields map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawFields); err != nil {
-		return err
-	}
-	if value.FirstPageUri != nil {
-		if err := ValidateUri("first_page_uri", *value.FirstPageUri); err != nil {
-			return err
-		}
-	}
-	if value.Uri != nil {
-		if err := ValidateUri("uri", *value.Uri); err != nil {
-			return err
-		}
-	}
-	if raw, ok := rawFields["next_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
-		value.NextPageUri = &NullableValue[string]{}
-	}
-	if raw, ok := rawFields["previous_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
-		value.PreviousPageUri = &NullableValue[string]{}
-	}
-	return nil
-}
-
-// NewListSipDomainsAuthRegistrationsCredentialListMappingsResponse returns a validated ListSipDomainsAuthRegistrationsCredentialListMappingsResponse built from named fields.
-// Optional fields may be left unset; a value that violates the schema is
-// reported as *SdkValidationError.
-func NewListSipDomainsAuthRegistrationsCredentialListMappingsResponse(fields ListSipDomainsAuthRegistrationsCredentialListMappingsResponse) (*ListSipDomainsAuthRegistrationsCredentialListMappingsResponse, error) {
-	return ConstructModel(fields)
-}
-
 type CreateSipDomainsAuthRegistrationsCredentialListMappingsParams struct {
 	AccountSid        string
 	DomainSid         string
@@ -291,4 +242,53 @@ func DeleteSipDomainsAuthRegistrationsCredentialListMappings(ctx context.Context
 		return nil, err
 	}
 	return nil, nil
+}
+
+type ListSipDomainsAuthRegistrationsCredentialListMappingsResponse struct {
+	End             *int64                                                                                            `json:"end,omitempty"`
+	FirstPageUri    *string                                                                                           `json:"first_page_uri,omitempty"`
+	NextPageUri     *NullableValue[string]                                                                            `json:"next_page_uri,omitempty"`
+	Page            *int64                                                                                            `json:"page,omitempty"`
+	PageSize        *int64                                                                                            `json:"page_size,omitempty"`
+	PreviousPageUri *NullableValue[string]                                                                            `json:"previous_page_uri,omitempty"`
+	Start           *int64                                                                                            `json:"start,omitempty"`
+	Uri             *string                                                                                           `json:"uri,omitempty"`
+	Contents        []ApiV2010AccountSipSipDomainSipAuthSipAuthRegistrationsSipAuthRegistrationsCredentialListMapping `json:"contents,omitempty"`
+}
+
+func (value *ListSipDomainsAuthRegistrationsCredentialListMappingsResponse) UnmarshalJSON(data []byte) error {
+	type ListSipDomainsAuthRegistrationsCredentialListMappingsResponseAlias ListSipDomainsAuthRegistrationsCredentialListMappingsResponse
+	var decoded ListSipDomainsAuthRegistrationsCredentialListMappingsResponseAlias
+	if err := json.Unmarshal(data, &decoded); err != nil {
+		return err
+	}
+	*value = ListSipDomainsAuthRegistrationsCredentialListMappingsResponse(decoded)
+	var rawFields map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawFields); err != nil {
+		return err
+	}
+	if value.FirstPageUri != nil {
+		if err := ValidateUri("first_page_uri", *value.FirstPageUri); err != nil {
+			return err
+		}
+	}
+	if value.Uri != nil {
+		if err := ValidateUri("uri", *value.Uri); err != nil {
+			return err
+		}
+	}
+	if raw, ok := rawFields["next_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
+		value.NextPageUri = &NullableValue[string]{}
+	}
+	if raw, ok := rawFields["previous_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
+		value.PreviousPageUri = &NullableValue[string]{}
+	}
+	return nil
+}
+
+// NewListSipDomainsAuthRegistrationsCredentialListMappingsResponse returns a validated ListSipDomainsAuthRegistrationsCredentialListMappingsResponse built from named fields.
+// Optional fields may be left unset; a value that violates the schema is
+// reported as *SdkValidationError.
+func NewListSipDomainsAuthRegistrationsCredentialListMappingsResponse(fields ListSipDomainsAuthRegistrationsCredentialListMappingsResponse) (*ListSipDomainsAuthRegistrationsCredentialListMappingsResponse, error) {
+	return ConstructModel(fields)
 }
