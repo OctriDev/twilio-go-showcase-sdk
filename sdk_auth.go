@@ -222,7 +222,7 @@ var operationSecurity = map[string][][]string{
 	"CreateUsageTriggers":                                     [][]string{[]string{"accountSid_authToken"}},
 	"ListUsageTriggers":                                       [][]string{[]string{"accountSid_authToken"}},
 	"CreateCallsUserDefinedMessages":                          [][]string{[]string{"accountSid_authToken"}},
-	"CreateCallsUserDefinedMessageSubscriptions":              [][]string{[]string{"accountSid_authToken"}},
+	"CreateCallUserDefinedMessageSubscription":                [][]string{[]string{"accountSid_authToken"}},
 	"DeleteCallsUserDefinedMessageSubscriptions":              [][]string{[]string{"accountSid_authToken"}},
 }
 

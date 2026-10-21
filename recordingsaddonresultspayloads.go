@@ -10,55 +10,6 @@ import (
 	"fmt"
 )
 
-type ListRecordingsAddOnResultsPayloadsResponse struct {
-	End             *int64                                                                    `json:"end,omitempty"`
-	FirstPageUri    *string                                                                   `json:"first_page_uri,omitempty"`
-	NextPageUri     *NullableValue[string]                                                    `json:"next_page_uri,omitempty"`
-	Page            *int64                                                                    `json:"page,omitempty"`
-	PageSize        *int64                                                                    `json:"page_size,omitempty"`
-	PreviousPageUri *NullableValue[string]                                                    `json:"previous_page_uri,omitempty"`
-	Start           *int64                                                                    `json:"start,omitempty"`
-	Uri             *string                                                                   `json:"uri,omitempty"`
-	Payloads        []ApiV2010AccountRecordingRecordingAddOnResultRecordingAddOnResultPayload `json:"payloads,omitempty"`
-}
-
-func (value *ListRecordingsAddOnResultsPayloadsResponse) UnmarshalJSON(data []byte) error {
-	type ListRecordingsAddOnResultsPayloadsResponseAlias ListRecordingsAddOnResultsPayloadsResponse
-	var decoded ListRecordingsAddOnResultsPayloadsResponseAlias
-	if err := json.Unmarshal(data, &decoded); err != nil {
-		return err
-	}
-	*value = ListRecordingsAddOnResultsPayloadsResponse(decoded)
-	var rawFields map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawFields); err != nil {
-		return err
-	}
-	if value.FirstPageUri != nil {
-		if err := ValidateUri("first_page_uri", *value.FirstPageUri); err != nil {
-			return err
-		}
-	}
-	if value.Uri != nil {
-		if err := ValidateUri("uri", *value.Uri); err != nil {
-			return err
-		}
-	}
-	if raw, ok := rawFields["next_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
-		value.NextPageUri = &NullableValue[string]{}
-	}
-	if raw, ok := rawFields["previous_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
-		value.PreviousPageUri = &NullableValue[string]{}
-	}
-	return nil
-}
-
-// NewListRecordingsAddOnResultsPayloadsResponse returns a validated ListRecordingsAddOnResultsPayloadsResponse built from named fields.
-// Optional fields may be left unset; a value that violates the schema is
-// reported as *SdkValidationError.
-func NewListRecordingsAddOnResultsPayloadsResponse(fields ListRecordingsAddOnResultsPayloadsResponse) (*ListRecordingsAddOnResultsPayloadsResponse, error) {
-	return ConstructModel(fields)
-}
-
 type FetchRecordingsAddOnResultsPayloadsParams struct {
 	AccountSid     string
 	ReferenceSid   string
@@ -336,4 +287,53 @@ func FetchRecordingsAddOnResultsPayloadsData(ctx context.Context, clientConfig C
 		return nil, err
 	}
 	return nil, nil
+}
+
+type ListRecordingsAddOnResultsPayloadsResponse struct {
+	End             *int64                                                                    `json:"end,omitempty"`
+	FirstPageUri    *string                                                                   `json:"first_page_uri,omitempty"`
+	NextPageUri     *NullableValue[string]                                                    `json:"next_page_uri,omitempty"`
+	Page            *int64                                                                    `json:"page,omitempty"`
+	PageSize        *int64                                                                    `json:"page_size,omitempty"`
+	PreviousPageUri *NullableValue[string]                                                    `json:"previous_page_uri,omitempty"`
+	Start           *int64                                                                    `json:"start,omitempty"`
+	Uri             *string                                                                   `json:"uri,omitempty"`
+	Payloads        []ApiV2010AccountRecordingRecordingAddOnResultRecordingAddOnResultPayload `json:"payloads,omitempty"`
+}
+
+func (value *ListRecordingsAddOnResultsPayloadsResponse) UnmarshalJSON(data []byte) error {
+	type ListRecordingsAddOnResultsPayloadsResponseAlias ListRecordingsAddOnResultsPayloadsResponse
+	var decoded ListRecordingsAddOnResultsPayloadsResponseAlias
+	if err := json.Unmarshal(data, &decoded); err != nil {
+		return err
+	}
+	*value = ListRecordingsAddOnResultsPayloadsResponse(decoded)
+	var rawFields map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawFields); err != nil {
+		return err
+	}
+	if value.FirstPageUri != nil {
+		if err := ValidateUri("first_page_uri", *value.FirstPageUri); err != nil {
+			return err
+		}
+	}
+	if value.Uri != nil {
+		if err := ValidateUri("uri", *value.Uri); err != nil {
+			return err
+		}
+	}
+	if raw, ok := rawFields["next_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
+		value.NextPageUri = &NullableValue[string]{}
+	}
+	if raw, ok := rawFields["previous_page_uri"]; ok && bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
+		value.PreviousPageUri = &NullableValue[string]{}
+	}
+	return nil
+}
+
+// NewListRecordingsAddOnResultsPayloadsResponse returns a validated ListRecordingsAddOnResultsPayloadsResponse built from named fields.
+// Optional fields may be left unset; a value that violates the schema is
+// reported as *SdkValidationError.
+func NewListRecordingsAddOnResultsPayloadsResponse(fields ListRecordingsAddOnResultsPayloadsResponse) (*ListRecordingsAddOnResultsPayloadsResponse, error) {
+	return ConstructModel(fields)
 }

@@ -631,8 +631,8 @@ func NewCallsUserDefinedMessageSubscriptionsNamespace(config ClientConfig) *Call
 //	unique string value per API call and can be a randomly generated.
 //	method: The HTTP method Twilio will use when requesting the above `Url`.
 //	Either `GET` or `POST`. Default is `POST`.
-func (sdk *CallsUserDefinedMessageSubscriptionsNamespace) Create(ctx context.Context, params CreateCallsUserDefinedMessageSubscriptionsParams, opts ...RequestOption) (*ApiV2010AccountCallUserDefinedMessageSubscription, error) {
-	return CreateCallsUserDefinedMessageSubscriptions(ctx, sdk.config, params, opts...)
+func (sdk *CallsUserDefinedMessageSubscriptionsNamespace) Create(ctx context.Context, params CreateCallUserDefinedMessageSubscriptionParams, opts ...RequestOption) (*ApiV2010AccountCallUserDefinedMessageSubscription, error) {
+	return CreateCallUserDefinedMessageSubscription(ctx, sdk.config, params, opts...)
 }
 
 // Delete delete a specific User Defined Message Subscription.
